@@ -25,3 +25,8 @@ function query(filterBy = {}) {
 function getById(toyId) {
     return storageService.get(STORAGE_KEY, toyId)
 }
+
+function remove(toyId) {
+    return storageService.remove(STORAGE_KEY, toyId)
+}
+
