@@ -30,3 +30,10 @@ function remove(toyId) {
     return storageService.remove(STORAGE_KEY, toyId)
 }
 
+function save(toy) {
+    if (toy._id) {
+        return storageService.put(STORAGE_KEY, toy)
+    } else {
+        return storageService.post(STORAGE_KEY, toy)
+    }
+}
