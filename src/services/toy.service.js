@@ -37,3 +37,10 @@ function save(toy) {
         return storageService.post(STORAGE_KEY, toy)
     }
 }
+
+function getEmptyToy() {
+    return {
+        name: '',
+        price: '',
+    }
+}
