@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 
+import { ToyList } from "../cmps/ToyList"
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { loadToys, removeToy, setFilter } from "../store/actions/toy.action"
 
@@ -14,19 +15,19 @@ export function ToyIndex() {
 
     useEffect(() => {
         loadToys()
-        .catch(err => {
-            console.log('error', err)
-            showErrorMsg('Cannot load toys')
-        })
+            .catch(err => {
+                console.log('error', err)
+                showErrorMsg('Cannot load toys')
+            })
     }, [filterBy])
 
     function onRemoveToy(toyId) {
         removeToy(toyId)
-        .then(() => showSuccessMsg('Toy has removed'))
-        .catch(err => {
-            console.log('error', err)
-            showErrorMsg('Cannot remove toy')
-        })
+            .then(() => showSuccessMsg('Toy has removed'))
+            .catch(err => {
+                console.log('error', err)
+                showErrorMsg('Cannot remove toy')
+            })
     }
 
     function onSetFilter(filterBy) {
@@ -41,7 +42,7 @@ export function ToyIndex() {
                 add toy (not available)
             </button>
 
-            
+            {!isLoading && <ToyList toys={toys} onRemoveToy={onRemoveToy} />}
         </section>
     )
 }
