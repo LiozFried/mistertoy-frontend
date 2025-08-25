@@ -31,9 +31,35 @@ export const toyService = {
 function query(filterBy = {}) {
     return storageService.query(STORAGE_KEY)
         .then(toys => {
-            if (!filterBy.txt) filterBy.txt = ''
-            const regExp = new RegExp(filterBy.txt, 'i')
-            return toys.filter(toy => regExp.test(toy.name))
+            let toysToDisplay = toys
+
+            if (filterBy.txt) {
+                const regExp = new RegExp(filterBy.txt, 'i')
+                toysToDisplay = toysToDisplay.filter(toy => regExp.test(toy.name))
+            }
+
+            if (typeof filterBy.inStock === 'boolean') {
+                toysToDisplay = toysToDisplay.filter(toy => toy.inStock === filterBy.inStock)
+            }
+
+            if (filterBy.labels?.length) {
+                toysToDisplay = toysToDisplay.filter(toy =>
+                    filterBy.labels.every(label => toy.labels.includes(label))
+                )
+            }
+
+            if (filterBy.sort.type) {
+                const dir = +filterBy.sort.desc
+                toysToDisplay.sort((a, b) => {
+                    if (filterBy.sort.type === 'name') {
+                        return a.name.localeCompare(b.name) * dir
+                    } else if (filterBy.sort.type === 'price' || filterBy.sort.type === 'createdAt') {
+                        return (a[filterBy.sort.type] - b[filterBy.sort.type]) * dir
+                    }
+                })
+            }
+
+            return toysToDisplay
         })
 }
 
