@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import { HomePage } from './pages/HomePage'
+import { ToyIndex } from './pages/ToyIndex'
 
 import { store } from './store/store'
 import { loadToyLabels } from './store/actions/toy.action'
@@ -22,6 +23,7 @@ export default function App() {
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path='/toy' element={<ToyIndex />} />
             </Routes>
           </main>
         </section>
