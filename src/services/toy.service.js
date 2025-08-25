@@ -53,5 +53,30 @@ function getEmptyToy() {
     return {
         name: '',
         price: '',
+        labels: _getRandomLabels(),
+        inStock: true,
+    }
+}
+
+function _getRandomLabels() {
+    const labelsCopy = [...labels]
+    const randLabels = []
+
+    for (let i = 0; i < 2; i++) {
+        const idx = utilService.getRandomIntInclusive(0, labelsCopy.length - 1)
+        randLabels.push(labelsCopy.splice(idx, 1)[0])
+    }
+    return randLabels
+}
+
+function getDefaultFilter() {
+    return {
+        txt: '',
+        inStock: '',
+        labels: [],
+        sort: {
+            type: '',
+            desc: 1,
+        },
     }
 }
