@@ -84,3 +84,9 @@ function getDefaultFilter() {
 function getToyLabels() {
     return Promise.resolve(labels)
 }
+
+function getInStockValue(inStock) {
+    if (inStock === '') return ''
+    if (inStock === 'true') return true
+    if (inStock === 'false') return false
+}
