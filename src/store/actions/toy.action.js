@@ -16,7 +16,22 @@ export function loadToys() {
         })
         .finally(() => {
             setTimeout(() => {
-                store.dispatch({ type: SET_IS_LOADING, isLoading: false})
+                store.dispatch({ type: SET_IS_LOADING, isLoading: false })
             }, 350)
         })
+}
+
+export function removeToy(toyId) {
+    return toyService.remove(toyId)
+        .then(() => {
+            store.dispatch({ type: REMOVE_TOY, toyId})
+        })
+        .catch(err => {
+            console.log('toy action: Cannot remove toy', err)
+            throw err
+        })
+}
+
+export function setFilter(filterBy = toyService.getDefaultFilter()) {
+    store.dispatch({ type: SET_FILTER_BY, filterBy: filterBy})
 }
