@@ -4,6 +4,17 @@ import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'toyDB'
 
+const labels = [
+    'On wheels',
+    'Box game',
+    'Art',
+    'Baby',
+    'Doll',
+    'Puzzle',
+    'Outdoor',
+    'Battery Powered',
+]
+
 export const toyService = {
     query,
     getById,
