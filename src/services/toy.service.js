@@ -22,6 +22,8 @@ export const toyService = {
     remove,
     getEmptyToy,
     getDefaultFilter,
+    getToyLabels,
+    getInStockValue
 }
 
 function query(filterBy = {}) {
