@@ -80,3 +80,7 @@ function getDefaultFilter() {
         },
     }
 }
+
+function getToyLabels() {
+    return Promise.resolve(labels)
+}
