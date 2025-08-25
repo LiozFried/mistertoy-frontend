@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 
 import { HomePage } from './pages/HomePage'
 import { ToyIndex } from './pages/ToyIndex'
+import { ToyDetails } from './pages/ToyDetails'
 
 import { store } from './store/store'
 import { loadToyLabels } from './store/actions/toy.action'
@@ -24,6 +25,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path='/toy' element={<ToyIndex />} />
+              <Route path='/toy/:toyId' element={<ToyDetails />} />
             </Routes>
           </main>
         </section>
