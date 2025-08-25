@@ -75,6 +75,8 @@ function save(toy) {
     if (toy._id) {
         return storageService.put(STORAGE_KEY, toy)
     } else {
+        toy.createdAt = Date.now()
+        toy.inStock = true
         return storageService.post(STORAGE_KEY, toy)
     }
 }
