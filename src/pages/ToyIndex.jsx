@@ -39,7 +39,7 @@ export function ToyIndex() {
             <p>filter cmp</p>
 
             <button className="add-toy-btn">
-                add toy (not available)
+                <Link to="/toy/edit">Add Toy</Link>
             </button>
 
             {!isLoading && <ToyList toys={toys} onRemoveToy={onRemoveToy} />}
