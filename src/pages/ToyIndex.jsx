@@ -44,6 +44,7 @@ export function ToyIndex() {
                 <Link to="/toy/edit">Add Toy</Link>
             </button>
 
+            {isLoading && <div>Loading...</div>}
             {!isLoading && <ToyList toys={toys} onRemoveToy={onRemoveToy} />}
         </section>
     )
