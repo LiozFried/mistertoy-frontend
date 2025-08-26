@@ -41,7 +41,7 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
     return (
         <section className="toy-filter">
             <h3>Toy Filter</h3>
-            <form className="flex align-center">
+            <form className="filter-form flex align-center">
                 <input
                     type="text" name="txt" placeholder="Search"
                     value={txt} onChange={handleChange}

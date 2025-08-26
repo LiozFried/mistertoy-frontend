@@ -27,12 +27,12 @@ export function ToyDetails() {
     return (
         <section className="toy-details">
             <h1>Toy Name: <span>{toy.name}</span></h1>
-            <h2>Toy Price: <span>${toy.price}</span></h2>
-            <h2>Labels: <span>{toy.labels.join(' ,')}</span></h2>
-            <h2>Created At: <span>{formattedDate}</span></h2>
-            <h2 className={toy.inStock ? 'green' : 'red'}>
+            <h1>Toy Price: <span>${toy.price}</span></h1>
+            <h1>Labels: <span>{toy.labels.join(' ,')}</span></h1>
+            <h1>Created At: <span>{formattedDate}</span></h1>
+            <h1 className={toy.inStock ? 'green' : 'red'}>
                 {toy.inStock ? 'In stock' : 'Not in stock'}
-            </h2>
+            </h1>
             <button className="back-btn">
                 <Link to="/toy">Back</Link>
             </button>

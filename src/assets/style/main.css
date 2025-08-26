@@ -4,7 +4,11 @@
 @import './base/base.css';
 @import './base/forms.css';
 @import './base/helpers.css';
-@import './base/layout.css'
+@import './base/layout.css';
 
 /* Components */
-
+@import './cmps/HomePage.css';
+@import './cmps/ToyDetails.css';
+@import './cmps/ToyEdit.css';
+@import './cmps/ToyFilter.css';
+@import './cmps/ToyIndex.css';

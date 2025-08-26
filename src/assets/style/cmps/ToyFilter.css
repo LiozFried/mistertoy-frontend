@@ -1,0 +1,8 @@
+.toy-filter {
+    padding-block: 1em;
+}
+
+.toy-filter .filter-form {
+  flex-wrap: wrap;
+  gap: 0.5em;
+}

@@ -55,37 +55,43 @@ export function ToyEdit() {
 
     return (
         <section className="toy-edit">
-            <h2>{toyToEdit._id ? 'Edit' : 'Add'} Toy</h2>
+            <h1>{toyToEdit._id ? 'Edit' : 'Add'} Toy</h1>
             <form onSubmit={onSaveToy}>
-                <label htmlFor="name">Name:</label>
-                <input
-                    type="text" id="name" name="name"
-                    value={toyToEdit.name} onChange={handleChange}
-                    required
-                />
+                <div className="form-group">
+                    <label htmlFor="name">Name:</label>
+                    <input
+                        type="text" id="name" name="name"
+                        value={toyToEdit.name} onChange={handleChange}
+                        required
+                    />
+                </div>
 
-                <label htmlFor="price">Price</label>
-                <input
-                    type="number" name="price" id="price"
-                    value={toyToEdit.price} onChange={handleChange}
-                    required min={"1"}
-                />
+                <div className="form-group">
+                    <label htmlFor="price">Price</label>
+                    <input
+                        type="number" name="price" id="price"
+                        value={toyToEdit.price} onChange={handleChange}
+                        required min={"1"}
+                    />
+                </div>
 
-                <label htmlFor="labels">Labels:</label>
-                <select
-                    name="labels" id="labels"
-                    multiple
-                    value={toyToEdit.labels} onChange={handleChange}
-                >
-                    {labels.map(label => (
-                        <option key={label} value={label}>
-                            {label}
-                        </option>
-                    ))}
-                </select>
+                <div className="form-group">
+                    <label htmlFor="labels">Labels:</label>
+                    <select
+                        name="labels" id="labels"
+                        multiple
+                        value={toyToEdit.labels} onChange={handleChange}
+                    >
+                        {labels.map(label => (
+                            <option key={label} value={label}>
+                                {label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 {toyToEdit._id && (
-                    <div>
+                    <div className="form-group">
                         <label htmlFor="inStock">In Stock:</label>
                         <input
                             type="checkbox" name="inStock" id="inStock"

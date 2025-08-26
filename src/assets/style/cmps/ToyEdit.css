@@ -1,0 +1,53 @@
+.toy-edit {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.toy-edit .form-group {
+    margin-bottom: 1rem;
+}
+
+.toy-edit .form-group label {
+    display: block;
+    margin-bottom: .5rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group select[multiple] {
+    min-height: 100px;
+}
+
+.toy-edit button {
+    background-color: #2e659c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.toy-edit button:hover {
+    background-color: #3976b3;
+}
+
+select[multiple] {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    outline: none;
+    cursor: pointer;
+}
+
+select[multiple] option {
+    padding: 6px;
+}

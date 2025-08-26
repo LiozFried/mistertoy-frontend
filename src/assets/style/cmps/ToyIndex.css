@@ -1,0 +1,7 @@
+.toy-index {
+    display: grid;
+}
+
+.toy-details span {
+    font-weight: 400;
+}

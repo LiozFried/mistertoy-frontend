@@ -7,7 +7,7 @@ export function ToyList({ onRemoveToy, toys }) {
         <section className="toy-list container">
             <ul>
                 {toys.map(toy => (
-                    <li key={toy._id}>
+                    <li className="clean-list" key={toy._id}>
                         <ToyPreview toy={toy} />
                         <div>
                             <button>
