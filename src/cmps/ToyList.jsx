@@ -11,7 +11,7 @@ export function ToyList({ onRemoveToy, toys }) {
                         <ToyPreview toy={toy} />
                         <div>
                             <button>
-                                Edit (not available)
+                                <Link to={`/toy/edit/${toy._id}`}>Edit</Link>
                             </button>
                             <button onClick={() => onRemoveToy(toy._id)}>Remove</button>
                         </div>
