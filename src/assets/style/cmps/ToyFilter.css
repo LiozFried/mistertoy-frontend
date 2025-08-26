@@ -1,8 +1,15 @@
 .toy-filter {
-    padding-block: 1em;
+  padding-block: 1em;
+  height: fit-content;
 }
 
 .toy-filter .filter-form {
   flex-wrap: wrap;
   gap: 0.5em;
+}
+
+.toy-filter select[name="labels"] {
+  min-width: 120px;
+  max-width: 200px;
+  max-height: 100px;
 }

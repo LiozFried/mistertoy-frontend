@@ -10,7 +10,7 @@ export function ToyPreview({ toy }) {
                     <img src={toy.imgUrl} alt={toy.name} />
                 </div>
                 <h1>Price: ${toy.price}</h1>
-                <h1 className={toy.isStock ? 'green' : 'red'}>
+                <h1 className={toy.inStock ? 'green' : 'red'}>
                     {toy.inStock ? 'In stock' : 'Not in stock'}
                 </h1>
             </div>

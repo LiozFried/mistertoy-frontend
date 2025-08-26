@@ -7,10 +7,17 @@ html {
 }
 
 body {
-    margin: 0;
+    background-color: #fcfaf7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: .5em 0 .5em;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -24,7 +31,10 @@ a {
     color: unset;
 }
 
-img, embed, video, object {
+img,
+embed,
+video,
+object {
     max-width: 100%;
 }
 
