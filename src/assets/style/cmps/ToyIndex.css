@@ -5,3 +5,7 @@
 .toy-details span {
     font-weight: 400;
 }
+
+.toy-index button {
+    width: max-content;
+}
