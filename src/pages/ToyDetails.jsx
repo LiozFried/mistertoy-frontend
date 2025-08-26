@@ -2,11 +2,14 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { showErrorMsg } from "../services/event-bus.service"
 import { toyService } from "../services/toy.service"
+import { Chat } from "../cmps/Chat"
+import { PopUp } from "../cmps/PopUp"
 
 export function ToyDetails() {
     const [toy, setToy] = useState(null)
     const { toyId } = useParams()
     const navigate = useNavigate()
+    const [isChatOpen, setIsChatOpen] = useState(false)
 
     useEffect(() => {
         loadToy()
@@ -36,6 +39,18 @@ export function ToyDetails() {
             <button className="back-btn">
                 <Link to="/toy">Back</Link>
             </button>
+
+            <section>
+                <PopUp
+                    header={<h3>Chat About {toy.name}s</h3>}
+                    footer={<h4>&copy; Mister-Toy</h4>}
+                    onClose={() => setIsChatOpen(false)}
+                    isOpen={isChatOpen}
+                >
+                    <Chat />
+                </PopUp>
+            </section>
+            {!isChatOpen && <button onClick={() => setIsChatOpen(true)} className='open-chat'>Chat</button>}
         </section>
     )
 }
