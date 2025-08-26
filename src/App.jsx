@@ -7,6 +7,7 @@ import { HomePage } from './pages/HomePage'
 import { ToyIndex } from './pages/ToyIndex'
 import { ToyEdit } from './pages/ToyEdit'
 import { ToyDetails } from './pages/ToyDetails'
+import { UserMsg } from './cmps/UserMsg'
 
 import { store } from './store/store'
 import { loadToyLabels } from './store/actions/toy.action'
@@ -34,6 +35,7 @@ export default function App() {
           </main>
         </section>
       </Router>
+      <UserMsg />
     </Provider>
   )
 }
