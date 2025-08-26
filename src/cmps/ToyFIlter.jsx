@@ -24,10 +24,19 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
             value = toyService.getInStockValue(value)
         }
 
+        if (field === 'sort-type') {
+            setFilterByToEdit(prevFilter => ({ ...prevFilter, sort: { ...prevFilter.sort, type: value } }))
+            return
+        }
+        if (field === 'sort-desc') {
+            setFilterByToEdit(prevFilter => ({ ...prevFilter, sort: { ...prevFilter.sort, desc: +value } }))
+            return
+        }
+
         setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
     }
 
-    const { txt, inStock, labels } = filterByToEdit
+    const { txt, inStock, labels, sort } = filterByToEdit
 
     return (
         <section className="toy-filter">
@@ -58,6 +67,18 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
                     </>
                 </select>
                 }
+
+                <select name="sort-type" value={sort.type} onChange={handleChange}>
+                   <option disabled value="">Sort By:</option>
+                   <option value="name">Name</option>
+                   <option value="price">Price</option>
+                   <option value="createdAt">Date Created</option>
+                </select>
+
+                <select name="sort-desc" value={sort.desc} onChange={handleChange}>
+                    <option value="1">Ascending</option>
+                    <option value="-1">Descending</option>
+                </select>
             </form>
         </section>
     )
