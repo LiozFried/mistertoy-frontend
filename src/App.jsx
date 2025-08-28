@@ -8,6 +8,7 @@ import { ToyIndex } from './pages/ToyIndex'
 import { ToyEdit } from './pages/ToyEdit'
 import { ToyDetails } from './pages/ToyDetails'
 import { UserMsg } from './cmps/UserMsg'
+import { ToyDashboard } from './pages/ToyDashboard'
 
 import { store } from './store/store'
 import { loadToyLabels } from './store/actions/toy.action'
@@ -28,6 +29,7 @@ export default function App() {
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path='/dashboard' element={<ToyDashboard />} />
               <Route path='/toy' element={<ToyIndex />} />
               <Route path='/toy/edit/:toyId?' element={<ToyEdit />} />
               <Route path='/toy/:toyId' element={<ToyDetails />} />
