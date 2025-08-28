@@ -1,5 +1,6 @@
-import { LabelsAveragePrice } from "../cmps/LabelsAveragePrice";
 import { useEffect, useState } from "react"
+import { LabelsAveragePrice } from "../cmps/LabelsAveragePrice";
+import { LabelsInventory } from "../cmps/LabelsInventory";
 
 export function ToyDashboard() {
 
@@ -12,6 +13,7 @@ export function ToyDashboard() {
             </div>
 
             <LabelsAveragePrice />
+            <LabelsInventory />
         </section>
     )
 }

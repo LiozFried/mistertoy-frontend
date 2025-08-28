@@ -27,6 +27,7 @@ export const toyService = {
     getToyLabels,
     getInStockValue,
     getToyLabelsAveragePrice,
+    getToyLabelsInventory,
 }
 
 function query(filterBy = {}) {
@@ -151,6 +152,31 @@ function getToyLabelsAveragePrice() {
                 })
             }
             return averagePrices
+        })
+}
+
+function getToyLabelsInventory() {
+    return storageService.query(STORAGE_KEY)
+        .then(toys => {
+            const inventoryData = {}
+            labels.forEach(label => {
+                inventoryData[label] = 0
+            })
+
+            toys.forEach(toy => {
+                if (toy.inStock) {
+                    toy.labels.forEach(label => {
+                        if (inventoryData.hasOwnProperty(label)) {
+                            inventoryData[label]++
+                        }
+                    })
+                }
+            })
+
+            return Object.keys(inventoryData).map(label => ({
+                label,
+                inventory: inventoryData[label]
+            }))
         })
 }
 
