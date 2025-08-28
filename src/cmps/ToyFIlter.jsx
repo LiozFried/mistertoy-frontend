@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { debounce } from '../services/util.service'
 import { toyService } from "../services/toy.service"
+import { FilterMultipleSelectLabels } from "./FilterMultipleSelectLabels"
 
 export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
 
@@ -12,17 +13,19 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
         setFilterDebounce(filterByToEdit)
     }, [filterByToEdit])
 
-    function handleChange({ target }) {
-        let { value, name: field, type } = target
-        if (type === 'select-multiple') {
-            value = [...target.selectedOptions].map(option => option.value)
+    function handleChange(event) {
+        let { value, name: field } = event.target
+
+        if (event.target.type === 'select-multiple') {
+            value = [...event.target.selectedOptions].map(option => option.value)
         } else {
-            value = type === 'number' ? +value : value
+            value = event.target.type === 'number' ? +value : value
         }
 
         if (field === 'inStock') {
             value = toyService.getInStockValue(value)
         }
+
 
         if (field === 'sort-type') {
             setFilterByToEdit(prevFilter => ({ ...prevFilter, sort: { ...prevFilter.sort, type: value } }))
@@ -34,6 +37,12 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
         }
 
         setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
+    }
+
+    function handleLabelsChange(event) {
+        const { value } = event.target
+        const valueToSet = typeof value === 'string' ? value.split(',') : value
+        setFilterByToEdit(prevFilter => ({ ...prevFilter, labels: valueToSet }))
     }
 
     const { txt, inStock, labels, sort } = filterByToEdit
@@ -53,26 +62,19 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
                     <option value="false">Not In Stock</option>
                 </select>
 
-                {toyLabels && <select
-                    multiple name="labels"
-                    value={labels || []} onChange={handleChange}
-                >
-                    <option disabled value="">Labels:</option>
-                    <>
-                        {toyLabels.map(label => (
-                            <option key={label} value={label}>
-                                {label}
-                            </option>
-                        ))}
-                    </>
-                </select>
+                {toyLabels &&
+                    <FilterMultipleSelectLabels
+                        labels={toyLabels}
+                        value={labels || []}
+                        onChange={handleLabelsChange}
+                    />
                 }
 
                 <select name="sort-type" value={sort.type} onChange={handleChange}>
-                   <option disabled value="">Sort By:</option>
-                   <option value="name">Name</option>
-                   <option value="price">Price</option>
-                   <option value="createdAt">Date Created</option>
+                    <option disabled value="">Sort By:</option>
+                    <option value="name">Name</option>
+                    <option value="price">Price</option>
+                    <option value="createdAt">Date Created</option>
                 </select>
 
                 <select name="sort-desc" value={sort.desc} onChange={handleChange}>

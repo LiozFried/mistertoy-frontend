@@ -39,7 +39,13 @@ export function FilterMultipleSelectLabels({ labels, value, onChange }) {
                 multiple
                 value={value}
                 onChange={onChange}
-                input={<OutlinedInput id="multiple-chip" label="Labels" />}
+                input={<OutlinedInput id="multiple-chip" label="Labels"
+                    sx={{
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: 'green'
+                        }
+                    }}
+                />}
                 renderValue={(selected) => (
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                         {selected.map((val) => (
@@ -59,7 +65,7 @@ export function FilterMultipleSelectLabels({ labels, value, onChange }) {
                     </MenuItem>
                 ))}
             </Select>
-        </FormControl>
+        </FormControl >
     )
 }
 
