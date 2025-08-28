@@ -1,6 +1,7 @@
 .toy-filter {
   padding-block: 1em;
   height: fit-content;
+  margin: auto;
 }
 
 .toy-filter .filter-form {
