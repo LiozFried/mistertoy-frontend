@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { LabelsAveragePrice } from "../cmps/LabelsAveragePrice";
 import { LabelsInventory } from "../cmps/LabelsInventory";
+import { RandomLineChart } from "../cmps/RandomLineChart";
 
 export function ToyDashboard() {
 
@@ -14,6 +15,7 @@ export function ToyDashboard() {
 
             <LabelsAveragePrice />
             <LabelsInventory />
+            <RandomLineChart />
         </section>
     )
 }
