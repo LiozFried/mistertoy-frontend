@@ -5,7 +5,8 @@ export const utilService = {
     loadFromStorage,
     saveToStorage,
     animateCSS,
-    debounce
+    debounce,
+    detRandomColor,
 }
 
 export function makeId(length = 6) {
@@ -70,4 +71,11 @@ export function debounce(func, timeout = 300) {
             func.apply(this, args)
         }, timeout)
     }
+}
+
+export function getRandomColor(a = 0.2) {
+    const r = Math.floor(Math.random() * 255)
+    const g = Math.floor(Math.random() * 255)
+    const b = Math.floor(Math.random() * 255)
+    return `rgba(${r}, ${g}, ${b}, ${a})`
 }
