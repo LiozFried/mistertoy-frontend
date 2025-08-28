@@ -6,7 +6,7 @@ export const utilService = {
     saveToStorage,
     animateCSS,
     debounce,
-    detRandomColor,
+    getRandomColor,
 }
 
 export function makeId(length = 6) {
