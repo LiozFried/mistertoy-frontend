@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 
 import { AppHeader } from './cmps/AppHeader'
 import { HomePage } from './pages/HomePage'
+import { About } from './pages/About'
 import { ToyIndex } from './pages/ToyIndex'
 import { ToyEdit } from './pages/ToyEdit'
 import { ToyDetails } from './pages/ToyDetails'
@@ -29,6 +30,7 @@ export default function App() {
           <main>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path='/about' element={<About />} />
               <Route path='/dashboard' element={<ToyDashboard />} />
               <Route path='/toy' element={<ToyIndex />} />
               <Route path='/toy/edit/:toyId?' element={<ToyEdit />} />
