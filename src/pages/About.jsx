@@ -1,3 +1,5 @@
+import { BranchesMap } from "../cmps/BranchesMap"
+
 export function About() {
     return (
         <section className="about container">
@@ -7,6 +9,9 @@ export function About() {
                 Atque eaque voluptatem est tempore fuga impedit,<br />
                 porro nobis nulla incidunt numquam!
             </p>
+
+            <button>Show Branches</button>
+            <BranchesMap />
         </section>
     )
 }
