@@ -1,6 +1,14 @@
 import { BranchesMap } from "../cmps/BranchesMap"
+import { useState, useEffect } from "react"
 
 export function About() {
+
+    const [isMapOpen, setIsMapOpen] = useState(false)
+
+    function toggleOpemMap() {
+        setIsMapOpen(!isMapOpen)
+    }
+
     return (
         <section className="about container">
             <h2>About Us</h2>
@@ -10,8 +18,8 @@ export function About() {
                 porro nobis nulla incidunt numquam!
             </p>
 
-            <button>Show Branches</button>
-            <BranchesMap />
+            <button onClick={toggleOpemMap}>Show Branches</button>
+            {isMapOpen && <BranchesMap />}
         </section>
     )
 }
