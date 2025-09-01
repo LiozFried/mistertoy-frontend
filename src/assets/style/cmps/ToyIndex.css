@@ -1,5 +1,6 @@
 .toy-index {
     display: grid;
+    margin-bottom: 5em;
 }
 
 .toy-details span {

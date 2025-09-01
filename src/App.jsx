@@ -3,6 +3,7 @@ import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import { AppHeader } from './cmps/AppHeader'
+import { AppFooter } from './cmps/AppFooter'
 import { HomePage } from './pages/HomePage'
 import { About } from './pages/About'
 import { ToyIndex } from './pages/ToyIndex'
@@ -37,6 +38,7 @@ export default function App() {
               <Route path='/toy/:toyId' element={<ToyDetails />} />
             </Routes>
           </main>
+          <AppFooter />
         </section>
       </Router>
       <UserMsg />

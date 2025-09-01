@@ -1,9 +1,11 @@
 .app-header {
   display: grid;
   grid-template-columns: auto 1fr;
-  background-color: rgb(180, 216, 238);
+  background-color: var(--clr-header-footer);
   padding-block: 1em;
   min-width: -webkit-fill-available;
+  position: sticky;
+  top: 0;
 
  >.nav-container {
   display: flex;

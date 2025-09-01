@@ -1,4 +1,5 @@
 /* Setup */
+@import './setup/vars.css';
 
 /* Base */
 @import './base/base.css';
@@ -20,3 +21,4 @@
 @import './cmps/PopUp.css';
 @import './cmps/ToyDashboard.css';
 @import './cmps/BranchesMap.css';
+@import './cmps/AppFooter.css';
