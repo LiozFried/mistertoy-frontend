@@ -22,3 +22,6 @@
 @import './cmps/ToyDashboard.css';
 @import './cmps/BranchesMap.css';
 @import './cmps/AppFooter.css';
+
+/* MQ */
+@import './setup/mq.css';

@@ -1,7 +1,9 @@
 .toy-filter {
+  justify-self: center;
   padding-block: 1em;
   height: fit-content;
   margin: auto;
+  
 }
 
 .toy-filter .filter-form {
