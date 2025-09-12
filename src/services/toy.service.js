@@ -74,7 +74,7 @@ function getEmptyToy() {
 }
 
 function getToyLabels() {
-    return [...labels]
+    return Promise.resolve([...labels])
 }
 
 function _getRandomLabels() {
@@ -120,9 +120,9 @@ function getInStockValue(inStock) {
 
 async function getToyLabelsAveragePrice() {
     try {
-        const toys = await query()
+        const { toys } = await query()
         const labelPrices = {}
-        const labels = getToyLabels()
+        const labels = await getToyLabels()
 
         labels.forEach(label => {
             labelPrices[label] = { total: 0, count: 0 }
@@ -156,9 +156,9 @@ async function getToyLabelsAveragePrice() {
 
 async function getToyLabelsInventory() {
     try {
-        const toys = await query()
+        const { toys } = await query()
         const inventoryData = {}
-        const labels = getToyLabels()
+        const labels = await getToyLabels()
 
         labels.forEach(label => {
             inventoryData[label] = 0

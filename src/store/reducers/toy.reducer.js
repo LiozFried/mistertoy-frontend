@@ -9,12 +9,14 @@ export const SET_TOY_LABELS = 'SET_TOY_LABELS'
 
 export const SET_FILTER_BY = 'SET_FILTER_BY'
 export const SET_IS_LOADING = 'SET_IS_LOADING'
+export const SET_MAX_PAGE = 'SET_MAX_PAGE'
 
 const initialState = {
     toys: [],
     toyLabels: [],
     filterBy: toyService.getDefaultFilter(),
     isLoading: false,
+    maxPage: 0,
 }
 
 export function toyReducer(state = initialState, cmd = {}) {
@@ -46,6 +48,9 @@ export function toyReducer(state = initialState, cmd = {}) {
 
         case SET_IS_LOADING:
             return { ...state, isLoading: cmd.isLoading }
+
+        case SET_MAX_PAGE:
+            return { ...state, maxPage: cmd.maxPage }
 
         default:
             return state

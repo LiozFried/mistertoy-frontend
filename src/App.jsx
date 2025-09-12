@@ -20,7 +20,14 @@ import { useEffect } from 'react'
 export default function App() {
 
   useEffect(() => {
-    loadToyLabels()
+    const fetchLabels = async () => {
+      try {
+        await loadToyLabels()
+      } catch (err) {
+        console.error('Failed to load toy labels:', err)
+      }
+    }
+    fetchLabels()
   }, [])
 
   return (

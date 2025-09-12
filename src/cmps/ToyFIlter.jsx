@@ -5,7 +5,7 @@ import { FilterMultipleSelectLabels } from "./FilterMultipleSelectLabels"
 
 export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
 
-    const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
+    const [filterByToEdit, setFilterByToEdit] = useState(filterBy || toyService.getDefaultFilter())
 
     const setFilterDebounce = useRef(debounce(onSetFilter, 300)).current
 
@@ -28,11 +28,11 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
 
 
         if (field === 'sort-type') {
-            setFilterByToEdit(prevFilter => ({ ...prevFilter, sort: { ...prevFilter.sort, type: value } }))
+            setFilterByToEdit(prevFilter => ({ ...prevFilter, sortBy: { ...prevFilter.sortBy, type: value } }))
             return
         }
         if (field === 'sort-desc') {
-            setFilterByToEdit(prevFilter => ({ ...prevFilter, sort: { ...prevFilter.sort, desc: +value } }))
+            setFilterByToEdit(prevFilter => ({ ...prevFilter, sortBy: { ...prevFilter.sortBy, desc: +value } }))
             return
         }
 
@@ -45,7 +45,7 @@ export function ToyFilter({ filterBy, onSetFilter, toyLabels }) {
         setFilterByToEdit(prevFilter => ({ ...prevFilter, labels: valueToSet }))
     }
 
-    const { txt, inStock, labels, sort } = filterByToEdit
+    const { txt, inStock, labels, sortBy: sort } = filterByToEdit
 
     return (
         <section className="toy-filter">
