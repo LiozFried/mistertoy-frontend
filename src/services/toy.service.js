@@ -1,21 +1,6 @@
-// Local Toy Service
-import { storageService } from './async-storage.service.js'
-import { utilService } from './util.service.js'
+import { httpService } from './http.service'
 
-const STORAGE_KEY = 'toyDB'
-
-const labels = [
-    'On wheels',
-    'Box game',
-    'Art',
-    'Baby',
-    'Doll',
-    'Puzzle',
-    'Outdoor',
-    'Battery Powered',
-]
-
-_createToys()
+const BASE_URL = 'toy/'
 
 export const toyService = {
     query,
@@ -28,58 +13,55 @@ export const toyService = {
     getInStockValue,
     getToyLabelsAveragePrice,
     getToyLabelsInventory,
+    addMsg,
+    removeMsg,
+    getLabelCounts,
 }
 
-function query(filterBy = {}) {
-    return storageService.query(STORAGE_KEY)
-        .then(toys => {
-            let toysToDisplay = toys
+const labels = [
+    'On wheels',
+    'Box game',
+    'Art',
+    'Baby',
+    'Doll',
+    'Puzzle',
+    'Outdoor',
+    'Battery Powered',
+]
 
-            if (filterBy.txt) {
-                const regExp = new RegExp(filterBy.txt, 'i')
-                toysToDisplay = toysToDisplay.filter(toy => regExp.test(toy.name))
-            }
-
-            if (typeof filterBy.inStock === 'boolean') {
-                toysToDisplay = toysToDisplay.filter(toy => toy.inStock === filterBy.inStock)
-            }
-
-            if (filterBy.labels?.length) {
-                toysToDisplay = toysToDisplay.filter(toy =>
-                    filterBy.labels.every(label => toy.labels.includes(label))
-                )
-            }
-
-            if (filterBy.sort.type) {
-                const dir = +filterBy.sort.desc
-                toysToDisplay.sort((a, b) => {
-                    if (filterBy.sort.type === 'name') {
-                        return a.name.localeCompare(b.name) * dir
-                    } else if (filterBy.sort.type === 'price' || filterBy.sort.type === 'createdAt') {
-                        return (a[filterBy.sort.type] - b[filterBy.sort.type]) * dir
-                    }
-                })
-            }
-
-            return toysToDisplay
-        })
+async function query(filterBy = {}) {
+    return httpService.get(BASE_URL, filterBy)
 }
 
-function getById(toyId) {
-    return storageService.get(STORAGE_KEY, toyId)
+async function getById(toyId) {
+    return httpService.get(BASE_URL + toyId)
 }
 
-function remove(toyId) {
-    return storageService.remove(STORAGE_KEY, toyId)
+async function remove(toyId) {
+    return httpService.delete(BASE_URL + toyId)
 }
 
-function save(toy) {
-    if (toy._id) {
-        return storageService.put(STORAGE_KEY, toy)
-    } else {
-        toy.createdAt = Date.now()
-        toy.inStock = true
-        return storageService.post(STORAGE_KEY, toy)
+async function save(toy) {
+    const BASE_URL = toy._id ? `toy/${toy._id}` : 'toy/'
+    const method = toy._id ? 'put' : 'post'
+    return httpService[method](BASE_URL, toy)
+}
+
+async function addMsg(toyId, msg) {
+    return httpService.post(BASE_URL + `${toyId}/msg`, msg)
+}
+
+async function removeMsg(toyId, msgId) {
+    return httpService.delete(BASE_URL + `${toyId}/msg/${msgId}`)
+}
+
+function getDefaultFilter() {
+    return {
+        txt: '',
+        inStock: null,
+        labels: [],
+        pageIdx: 0,
+        sortBy: { type: '', sortDir: 1 },
     }
 }
 
@@ -88,35 +70,46 @@ function getEmptyToy() {
         name: '',
         price: '',
         labels: _getRandomLabels(),
-        inStock: true,
-    }
-}
-
-function _getRandomLabels() {
-    const labelsCopy = [...labels]
-    const randLabels = []
-
-    for (let i = 0; i < 2; i++) {
-        const idx = utilService.getRandomIntInclusive(0, labelsCopy.length - 1)
-        randLabels.push(labelsCopy.splice(idx, 1)[0])
-    }
-    return randLabels
-}
-
-function getDefaultFilter() {
-    return {
-        txt: '',
-        inStock: '',
-        labels: [],
-        sort: {
-            type: '',
-            desc: 1,
-        },
     }
 }
 
 function getToyLabels() {
-    return Promise.resolve(labels)
+    return [...labels]
+}
+
+function _getRandomLabels() {
+    const labelsCopy = [...labels]
+    const randomLabels = []
+    for (let i = 0; i < 2; i++) {
+        const randomIdx = Math.floor(Math.random() * labelsCopy.length)
+        randomLabels.push(labelsCopy.splice(randomIdx, 1)[0])
+    }
+    return randomLabels
+}
+
+async function getLabelCounts() {
+    try {
+        const { toys } = await query()
+        const labelCounts = {}
+        toys.forEach(toy => {
+            toy.labels.forEach(label => {
+                if (labelCounts[label]) {
+                    labelCounts[label]++
+                } else {
+                    labelCounts[label] = 1
+                }
+            })
+        })
+        const labelCountArray = Object.entries(labelCounts).map(
+            ([label, count]) => ({
+                label,
+                count,
+            })
+        )
+        return labelCountArray
+    } catch (error) {
+        console.log('Could not get label count', error)
+    }
 }
 
 function getInStockValue(inStock) {
@@ -125,158 +118,69 @@ function getInStockValue(inStock) {
     if (inStock === 'false') return false
 }
 
-function getToyLabelsAveragePrice() {
-    return storageService.query(STORAGE_KEY)
-        .then(toys => {
-            const labelPrices = {}
-            labels.forEach(label => {
-                labelPrices[label] = { total: 0, count: 0 }
-            })
+async function getToyLabelsAveragePrice() {
+    try {
+        const toys = await query()
+        const labelPrices = {}
+        const labels = getToyLabels()
 
-            toys.forEach(toy => {
-                toy.labels.forEach(label => {
-                    if (labelPrices[label]) {
-                        labelPrices[label].total += toy.price
-                        labelPrices[label].count++
-                    }
-                })
-            })
-
-            const averagePrices = []
-            for (const label in labelPrices) {
-                const { total, count } = labelPrices[label]
-                const averagePrice = count > 0 ? (total / count).toFixed(2) : 0
-                averagePrices.push({
-                    label: label,
-                    averagePrice: +averagePrice
-                })
-            }
-            return averagePrices
+        labels.forEach(label => {
+            labelPrices[label] = { total: 0, count: 0 }
         })
-}
 
-function getToyLabelsInventory() {
-    return storageService.query(STORAGE_KEY)
-        .then(toys => {
-            const inventoryData = {}
-            labels.forEach(label => {
-                inventoryData[label] = 0
-            })
-
-            toys.forEach(toy => {
-                if (toy.inStock) {
-                    toy.labels.forEach(label => {
-                        if (inventoryData.hasOwnProperty(label)) {
-                            inventoryData[label]++
-                        }
-                    })
+        toys.forEach(toy => {
+            toy.labels.forEach(label => {
+                if (labelPrices[label]) {
+                    labelPrices[label].total += toy.price
+                    labelPrices[label].count++
                 }
             })
-
-            return Object.keys(inventoryData).map(label => ({
-                label,
-                inventory: inventoryData[label]
-            }))
         })
+
+        const averagePrices = []
+        for (const label in labelPrices) {
+            const { total, count } = labelPrices[label]
+            const averagePrice = count > 0 ? (total / count).toFixed(2) : 0
+            averagePrices.push({
+                label: label,
+                averagePrice: +averagePrice
+            })
+        }
+        return averagePrices
+
+    } catch (err) {
+        console.error('Could not get toy labels average price:', err)
+        throw err
+    }
 }
 
-function _createToys() {
-    let toys = utilService.loadFromStorage(STORAGE_KEY)
+async function getToyLabelsInventory() {
+    try {
+        const toys = await query()
+        const inventoryData = {}
+        const labels = getToyLabels()
 
-    if (!toys || !toys.length) {
-        toys = [
-            {
-                "_id": "t101",
-                "name": "Remote Control Car",
-                "imgUrl": "https://images.pexels.com/photos/29082154/pexels-photo-29082154.jpeg",
-                "price": 45,
-                "labels": ["On wheels", "Battery Powered"],
-                "createdAt": 1631031801011,
-                "inStock": true
-            },
-            {
-                "_id": "t102",
-                "name": "Chess Set",
-                "imgUrl": "https://images.pexels.com/photos/6598772/pexels-photo-6598772.jpeg",
-                "price": 25,
-                "labels": ["Box game", "Art"],
-                "createdAt": 1642145678900,
-                "inStock": true
-            },
-            {
-                "_id": "t103",
-                "name": "Baby Mobile",
-                "imgUrl": "https://images.pexels.com/photos/11369154/pexels-photo-11369154.jpeg",
-                "price": 30,
-                "labels": ["Baby", "Art"],
-                "createdAt": 1653259876543,
-                "inStock": true
-            },
-            {
-                "_id": "t104",
-                "name": "Building Blocks",
-                "imgUrl": "https://images.pexels.com/photos/1148496/pexels-photo-1148496.jpeg",
-                "price": 20,
-                "labels": ["Puzzle", "Outdoor"],
-                "createdAt": 1664374567890,
-                "inStock": false
-            },
-            {
-                "_id": "t105",
-                "name": "Toy Robot",
-                "imgUrl": "https://images.pexels.com/photos/8294651/pexels-photo-8294651.jpeg",
-                "price": 75,
-                "labels": ["Battery Powered", "On wheels"],
-                "createdAt": 1675489876543,
-                "inStock": true
-            },
-            {
-                "_id": "t106",
-                "name": "Wooden Dollhouse",
-                "imgUrl": "https://images.pexels.com/photos/191360/pexels-photo-191360.jpeg",
-                "price": 90,
-                "labels": ["Doll", "Art"],
-                "createdAt": 1686604567890,
-                "inStock": false
-            },
-            {
-                "_id": "t107",
-                "name": "Jigsaw Puzzle",
-                "imgUrl": "https://images.pexels.com/photos/3482442/pexels-photo-3482442.jpeg",
-                "price": 15,
-                "labels": ["Puzzle", "Box game"],
-                "createdAt": 1697718901234,
-                "inStock": true
-            },
-            {
-                "_id": "t108",
-                "name": "Tricycle",
-                "imgUrl": "https://images.pexels.com/photos/1230751/pexels-photo-1230751.jpeg",
-                "price": 55,
-                "labels": ["Outdoor", "On wheels", "Baby"],
-                "createdAt": 1708834567890,
-                "inStock": true
-            },
-            {
-                "_id": "t109",
-                "name": "Action Figure",
-                "imgUrl": "https://images.pexels.com/photos/7829101/pexels-photo-7829101.jpeg",
-                "price": 28,
-                "labels": ["Doll", "Art"],
-                "createdAt": 1719949876543,
-                "inStock": false
-            },
-            {
-                "_id": "t110",
-                "name": "Electronic Drum Set",
-                "imgUrl": "https://images.pexels.com/photos/258668/pexels-photo-258668.jpeg",
-                "price": 110,
-                "labels": ["Battery Powered", "Art"],
-                "createdAt": 1731064567890,
-                "inStock": true
+        labels.forEach(label => {
+            inventoryData[label] = 0
+        })
+
+        toys.forEach(toy => {
+            if (toy.inStock) {
+                toy.labels.forEach(label => {
+                    if (inventoryData.hasOwnProperty(label)) {
+                        inventoryData[label]++
+                    }
+                })
             }
-        ]
+        })
 
-        utilService.saveToStorage(STORAGE_KEY, toys)
+        return Object.keys(inventoryData).map(label => ({
+            label,
+            inventory: inventoryData[label]
+        }))
+
+    } catch (err) {
+        console.error('Could not get toy labels inventory:', err)
+        throw err
     }
 }
