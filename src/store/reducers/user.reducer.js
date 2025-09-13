@@ -1,7 +1,9 @@
+import { userService } from '../../services/user.service'
+
 export const SET_USER = 'SET_USER'
 
 const initialState = {
-    loggedinUser: null
+    loggedinUser: userService.getLoggedinUser(),
 }
 
 export function userReducer(state = initialState, cmd = {}) {
